@@ -1,7 +1,4 @@
 
-
-# all scripts must contain firs line empty
-
 # 1.  Configuring the Environment
 
 # turn on Bash hash functions
@@ -231,6 +228,12 @@ base_dir=$(pwd)
 ## Create directories
 mkdir -p "$base_dir"/{packages,extracted}
 
+
+## download dependancies
+
+wget -nc -i packages-list.txt -P packages/
+
+
 # busybox
 tar -xvf "$base_dir/packages/busybox-1.32.0.tar.bz2" -C "$base_dir/extracted"
 
@@ -430,8 +433,6 @@ cp -v ${donyaOS}/cross-tools/${donyaOS_TARGET}/lib64/libgcc_s.so.1 ${donyaOS}/li
 
 ###################################################################################################
 
-
-
 #3. Building the Target Image
 
 # The hard part is now complete—you have the cross compiler. Now, let's focus on building the components that will be installed on the target image. This includes various libraries and utilities and, of course, the Linux kernel itself. 
@@ -456,8 +457,6 @@ make CROSS_COMPILE="${donyaOS_TARGET}-" CONFIG_PREFIX="${donyaOS}" install
 
 cp -v examples/depmod.pl ${donyaOS}/cross-tools/bin
 chmod 755 ${donyaOS}/cross-tools/bin/depmod.pl
-
-
 
 
 ## The Linux Kernel
@@ -493,8 +492,6 @@ ${donyaOS}/cross-tools/bin/depmod.pl \
 -b ${donyaOS}/lib/modules/5.8.0
 
 #####################################################################################
-
-
 
 
 # The Bootscripts 
@@ -536,11 +533,6 @@ ln -svf ../lib/libz.so.1 ${donyaOS}/lib64/libz.so.1
 #####################################################################################
 
 
-
-
-
-
-
 # 4. Installing the Target Image
 
 # All of the cross compilation is complete. Now you have everything you need to install the entire cross-compiled operating system to either a physical or virtual drive, but before doing that, let's not tamper with the original target build directory by making a copy of it: 
@@ -569,7 +561,6 @@ find ${donyaOS}-copy/{,usr/}lib64 -type f -exec sudo strip --strip-debug '{}' ';
 
 # Finally, change file ownerships and create the following nodes: 
 
-
 sudo chown -R root:root ${donyaOS}-copy
 sudo chgrp 13 ${donyaOS}-copy/var/run/utmp ${donyaOS}-copy/var/log/lastlog
 sudo mknod -m 0666 ${donyaOS}-copy/dev/null c 1 3
@@ -577,12 +568,18 @@ sudo mknod -m 0600 ${donyaOS}-copy/dev/console c 5 1
 sudo chmod 4755 ${donyaOS}-copy/bin/busybox
 
 
-
 # Change into the target copy directory to create a tarball of the entire operating system image:
 
 cd ${donyaOS}-copy/
 
 sudo tar cfJ ../donyaOS-build.tar.xz *
+
+#########################################################################################################
+
+# Finish creating donyaOS 
+
+#########################################################################################################
+
 
 
 # # Notice how the target image is less than 60MB. You built that—a minimal Linux operating system that occupies less than 60MB of disk space:
@@ -631,7 +628,6 @@ sudo tar cfJ ../donyaOS-build.tar.xz *
 # # # Booting Up the OS
 
 # sudo qemu-system-x86_64 /dev/sdb
-
 
 # username: root
 

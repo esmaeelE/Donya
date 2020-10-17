@@ -4,7 +4,7 @@
 
 Just only use compressed package `donyaOS-build.tar.xz`
 
-Suppose we have another dist hard disk `sdb` to install donyaOS on it
+Suppose we have another hard disk `sdb` to install donyaOS on it
 Create a 100 MB partition in it.
 
 ## Format it
@@ -31,9 +31,3 @@ Create a 100 MB partition in it.
 ## Build from source
 
 `./run`
-
----
-
-## download dependancy with
-
-`wget -nc -i packages-list.txt -P packages/`
