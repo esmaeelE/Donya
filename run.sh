@@ -218,7 +218,6 @@ chmod -v 664 ${donyaOS}/var/run/utmp ${donyaOS}/var/log/lastlog
 
 # 2. Build the Cross Compiler
 
-
 #################################
 #Extract#########################
 #################################
@@ -227,12 +226,6 @@ base_dir=$(pwd)
 
 ## Create directories
 mkdir -p "$base_dir"/{packages,extracted}
-
-
-## download dependancies
-
-wget -nc -i packages-list.txt -P packages/
-
 
 # busybox
 tar -xvf "$base_dir/packages/busybox-1.32.0.tar.bz2" -C "$base_dir/extracted"
@@ -501,7 +494,7 @@ cd "$base_dir/extracted"
 cd clfs* 
 
 # copy edited Make
-cp $base_dir/Makefile "$base_dir/extracted"/clfs*
+cp $base_dir/tmp/Makefile "$base_dir/extracted"/clfs*
 
 make DESTDIR=${donyaOS}/ install-bootscripts
 ln -sv ../rc.d/startup ${donyaOS}/etc/init.d/rcS
