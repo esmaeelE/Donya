@@ -1,5 +1,7 @@
 # donyaOS installation guide
 
+https://github.com/comfies/tldrlfs
+
 ## Install
 
 Just only use compressed package `donyaOS-build.tar.xz`
